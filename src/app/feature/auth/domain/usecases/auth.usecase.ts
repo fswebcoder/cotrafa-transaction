@@ -3,6 +3,7 @@ import { IAuthRepository } from "../repositories/auth.repository";
 import { LoginDto } from "../dtos/login.dto";
 import { IGeneralResponse } from "@app/shared/models/general_response.model";
 import { IUser } from "../entities/user.entity";
+import { Observable } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +11,8 @@ import { IUser } from "../entities/user.entity";
 export class AuthUseCase {
   private readonly authRepository = inject(IAuthRepository);
 
-  async login(loginDto: LoginDto): Promise<IGeneralResponse<IUser>> {
-    return await this.authRepository.login(loginDto);
+  login(loginDto: LoginDto): Observable<IGeneralResponse<IUser>> {
+    return this.authRepository.login(loginDto);
   }
  
 }

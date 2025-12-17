@@ -5,15 +5,18 @@ import { LoginDto } from "../../domain/dtos/login.dto";
 import { IGeneralResponse } from "@app/shared/models/general_response.model";
 import { IUser } from "../../domain/entities/user.entity";
 import { toUserEntity } from "../../domain/mapper/user.mapper";
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
 
 export class AuthRepositoryImp implements IAuthRepository {
   private readonly authDataSourceService = inject(AuthDataSourceService);
 
-  async login(loginDto: LoginDto): Promise<IGeneralResponse<IUser>> {
-    const response = await this.authDataSourceService.login(loginDto);
-    return {
-      ...response,
-      data: toUserEntity(response.data)
-    };
+  login(loginDto: LoginDto): Observable<IGeneralResponse<IUser>> {
+    return this.authDataSourceService.login(loginDto).pipe(
+      map(response => ({
+        ...response,
+        data: toUserEntity(response.data)
+      }))
+    );
   }
 }

@@ -1,4 +1,4 @@
-import { ApplicationConfig, isDevMode, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { ApplicationConfig, InjectionToken, isDevMode, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { providePrimeNG } from 'primeng/config';
 import { definePreset } from '@primeuix/themes';
@@ -6,6 +6,12 @@ import Nora from '@primeng/themes/nora';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 
 import { routes } from './app.routes';
+import { ALL_REPOSITORIES } from './core/providers/repositories.provider';
+import { Environment } from './shared/models/environment';
+import { environment } from './enviromments/environment';
+import { provideCore } from './core/providers/store/provide.core';
+export const ENVIRONMENT = new InjectionToken<Environment>('environment');
+
 const cfcPreset = definePreset(Nora, {
     semantic: {
         primary: {
@@ -40,7 +46,9 @@ export const appConfig: ApplicationConfig = {
         }
       }
     }),
+  { provide: ENVIRONMENT, useValue: environment },
+    provideCore(),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
-
+    ...ALL_REPOSITORIES
   ]
 };

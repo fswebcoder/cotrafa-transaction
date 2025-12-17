@@ -4,6 +4,7 @@ import { environment } from "@app/enviromments/environment";
 import { IGeneralResponse } from "@app/shared/models/general_response.model";
 import { ILoginResponseDto } from "../../domain/dtos/user-response.dto";
 import { LoginDto } from "../../domain/dtos/login.dto";
+import { Observable } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -12,12 +13,8 @@ export class AuthDataSourceService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = environment.services.apiUrl;
 
-  async login(loginDto: LoginDto): Promise<IGeneralResponse<ILoginResponseDto>> {
-    const response = await this.http.post<IGeneralResponse<ILoginResponseDto>>(`${this.baseUrl}/auth/login`, loginDto).toPromise();
-    if (!response) {
-      throw new Error('No response from server');
-    }
-    return response;
+  login(loginDto: LoginDto): Observable<IGeneralResponse<ILoginResponseDto>> {
+    return this.http.post<IGeneralResponse<ILoginResponseDto>>(`${this.baseUrl}/auth/login`, loginDto);
   }
 }
     
