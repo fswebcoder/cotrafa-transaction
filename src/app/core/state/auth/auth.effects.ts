@@ -1,4 +1,5 @@
 import { Injectable, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, exhaustMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -9,6 +10,7 @@ import { AuthUseCase } from '@app/feature/auth/domain/usecases/auth.usecase';
 export class AuthEffects {
     private actions$ = inject(Actions);
     private authUseCase = inject(AuthUseCase);
+    private router = inject(Router);
 
     login$ = createEffect(() =>
         this.actions$.pipe(
@@ -31,10 +33,25 @@ export class AuthEffects {
         this.actions$.pipe(
             ofType(AuthActions.loginSuccess),
             tap(({ user }) => {
-                sessionStorage.setItem('token', user.token || '');
+                const userWithoutToken = { ...user, token: '' };
+                sessionStorage.setItem('user', JSON.stringify(userWithoutToken));
+                this.router.navigate(['/dashboard']);
             })
         ),
         { dispatch: false }
+    );
+
+    checkAuth$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(AuthActions.checkAuth),
+            map(() => {
+                const user = sessionStorage.getItem('user');
+                if (user) {
+                    return AuthActions.restoreSessionSuccess({ user: JSON.parse(user) });
+                }
+                return AuthActions.checkAuthComplete();
+            })
+        )
     );
 
 
