@@ -29,7 +29,7 @@
         <span class="text-sm text-700">CC: {{ selectedBeneficiary?.document_number }}</span>
         <span class="text-xs text-600 mt-1 flex align-items-center gap-1">
           <i class="pi pi-credit-card text-xs"></i>
-          {{ selectedBeneficiary?.user_accounts?.[0]?.account_number }}
+          {{ selectedBeneficiary?.user_accounts?.[0]?.account_number }} - {{ selectedBeneficiary?.user_accounts?.[0]?.account_alias }}
         </span>
       </div>
     </div>
@@ -40,9 +40,10 @@
         label="Monto a transferir"
         mask="separator.0" 
         thousandSeparator=","
+        decimalMarker="."
         prefix="$ "
         type="text"
-        [errorMessages]="{ max: 'El monto excede tu saldo disponible', required: 'Ingresa un monto válido' }">
+        [errorMessages]="{ maxAmount: 'El monto excede tu saldo disponible', required: 'Ingresa un monto válido' }">
       </cf-custom-input>
     </div>
 

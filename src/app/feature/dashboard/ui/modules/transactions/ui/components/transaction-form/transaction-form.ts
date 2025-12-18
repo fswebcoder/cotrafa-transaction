@@ -30,25 +30,33 @@ export class TransactionForm {
   onTransfer = output<{ beneficiaryId: number; amount: number }>();
 
   userOptions = computed(() => {
-    return this.users().map(u => ({
-      label: `${u.user_name} ${u.last_name} - ${u.document_number}`,
-      value: u
+    return this.users().map(user => ({
+      label: `${user.user_name} ${user.last_name} - ${user.document_number}`,
+      value: user 
     }));
   });
 
   form = new FormGroup({
     beneficiary: new FormControl<IUser | null>(null, [Validators.required]),
-    amount: new FormControl<number | null>(null, [Validators.required, Validators.min(1)])
+    amount: new FormControl<number | null>(null, [
+      Validators.required, 
+      Validators.min(1),
+      (control) => {
+         const user = this.user();
+         if (!user?.user_accounts?.[0] || !control.value) return null;
+         const balance = user.user_accounts[0].account_balance;
+         if (Number(control.value) > balance) {
+           return { maxAmount: { max: balance, actual: control.value } };
+         }
+         return null;
+       }
+    ])
   });
 
   constructor() {
     effect(() => {
-      const user = this.user();
-      if (user?.user_accounts?.[0]) {
-        const balance = user.user_accounts[0].account_balance;
-        this.form.controls.amount.addValidators(Validators.max(balance));
-        this.form.controls.amount.updateValueAndValidity();
-      }
+      this.user();
+      this.form.controls.amount.updateValueAndValidity();
     });
   }
 

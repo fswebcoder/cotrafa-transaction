@@ -13,6 +13,6 @@ export class UsersDatasourceService  {
   private readonly baseUrl = environment.services.apiUrl;
 
   getUsers(): Observable<IGeneralResponse<IUserDto[]>> {
-    return this.http.get<IGeneralResponse<IUserDto[]>>(`${this.baseUrl}/users`);
+    return this.http.get<IGeneralResponse<IUserDto[]>>(`${this.baseUrl}users`);
   }
 }
