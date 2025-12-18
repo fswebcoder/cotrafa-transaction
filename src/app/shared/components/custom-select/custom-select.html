@@ -1,18 +1,7 @@
 <p-floatlabel variant="on">
-  <p-select
-    [formControl]="control"
-    [inputId]="id"
-    [options]="options()"
-    [optionLabel]="optionLabel()"
-    [optionValue]="optionValue()"
-    [placeholder]="placeholder()"
-    [loading]="loading()"
-    [filter]="filter()"
-    [showClear]="showClear()"
-    styleClass="w-full border-round-xl"
-    [style]="{'width': '100%'}"
-    (onBlur)="onBlur()"
-  />
+  <p-select [formControl]="control" [inputId]="id" [options]="options()" [optionLabel]="optionLabel()"
+    [optionValue]="optionValue()" [placeholder]="placeholder()" [loading]="loading()" [filter]="filter()"
+    [showClear]="showClear()" styleClass="w-full border-round-xl" [style]="{'width': '100%'}" (onBlur)="onBlur()" />
   <label [for]="id">{{ label() }}</label>
 </p-floatlabel>
 

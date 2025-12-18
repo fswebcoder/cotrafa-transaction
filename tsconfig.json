@@ -38,6 +38,9 @@
       ],
       "@shared/*": [
         "src/app/shared/*"
+      ],
+      "@feature/dashboard/*": [
+        "src/app/feature/dashboard/ui/*"
       ]
     }
   },
