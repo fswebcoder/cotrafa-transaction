@@ -14,7 +14,7 @@ export class AuthDataSourceService {
   private readonly baseUrl = environment.services.apiUrl;
 
   login(loginDto: LoginDto): Observable<IGeneralResponse<ILoginResponseDto>> {
-    return this.http.post<IGeneralResponse<ILoginResponseDto>>(`${this.baseUrl}/auth/login`, loginDto);
+    return this.http.post<IGeneralResponse<ILoginResponseDto>>(`${this.baseUrl}auth/login`, loginDto);
   }
 }
     

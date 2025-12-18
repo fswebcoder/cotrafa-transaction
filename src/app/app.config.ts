@@ -1,9 +1,11 @@
 import { ApplicationConfig, InjectionToken, isDevMode, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
 import { definePreset } from '@primeuix/themes';
 import Nora from '@primeng/themes/nora';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { MessageService } from 'primeng/api';
 
 import { routes } from './app.routes';
 import { ALL_REPOSITORIES } from './core/providers/repositories.provider';
@@ -33,6 +35,7 @@ const cfcPreset = definePreset(Nora, {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
+    provideAnimationsAsync(),
     provideRouter(routes),
     providePrimeNG({
       theme: {
@@ -46,6 +49,7 @@ export const appConfig: ApplicationConfig = {
         }
       }
     }),
+    MessageService,
   { provide: ENVIRONMENT, useValue: environment },
     provideCore(),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
