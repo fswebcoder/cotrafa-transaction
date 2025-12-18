@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { IUser } from '@app/shared/entities/user.entity';
+import { ITransaction } from '@app/feature/dashboard/ui/modules/transactions/domain/entities/transaction.entity';
 
 export const loadUsers = createAction(
   '[Transactions] Load Users'
@@ -13,4 +14,32 @@ export const loadUsersSuccess = createAction(
 export const loadUsersFailure = createAction(
   '[Transactions] Load Users Failure',
   props<{ error: string }>()
+);
+
+// Transaction Flow
+export const saveTransaction = createAction(
+  '[Transactions] Save Transaction',
+  props<{ 
+    beneficiaryId: number; 
+    amount: number; 
+    sourceAccountId: number; 
+    sourceAccountNumber: string;
+    destinationAccountNumber: string;
+    beneficiaryName: string; 
+    userId: number 
+  }>()
+);
+
+export const saveTransactionSuccess = createAction(
+  '[Transactions] Save Transaction Success',
+  props<{ transaction: ITransaction }>()
+);
+
+export const saveTransactionFailure = createAction(
+  '[Transactions] Save Transaction Failure',
+  props<{ error: string }>()
+);
+
+export const resetTransactionState = createAction(
+    '[Transactions] Reset Transaction State'
 );

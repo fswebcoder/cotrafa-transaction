@@ -1,5 +1,16 @@
-<cf-transaction-dump 
-  [user]="user()" 
-  [users]="users()"
-  (onTransfer)="handleTransfer($event)">
-</cf-transaction-dump>
+@if (lastTransaction()) {
+    <div class="grid justify-content-center p-2">
+        <div class="col-12 md:col-6 lg:col-4">
+            <cf-transaction-result 
+                [transaction]="lastTransaction()!" 
+                (onNewTransaction)="handleNewTransaction()">
+            </cf-transaction-result>
+        </div>
+    </div>
+} @else {
+    <cf-transaction-dump 
+      [user]="user()" 
+      [users]="users()"
+      (onTransfer)="handleTransfer($event)">
+    </cf-transaction-dump>
+}

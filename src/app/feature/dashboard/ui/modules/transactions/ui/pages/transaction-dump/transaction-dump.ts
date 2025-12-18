@@ -4,6 +4,7 @@ import { CardModule } from 'primeng/card';
 import { SkeletonModule } from 'primeng/skeleton';
 import { IUser } from '@app/shared/entities/user.entity';
 import { TransactionForm } from '../../components/transaction-form/transaction-form';
+import { TransactionFormOutput } from '../../../domain/dtos/transaction-request.dto';
 
 @Component({
   selector: 'cf-transaction-dump',
@@ -21,5 +22,5 @@ export class TransactionDump {
   user = input<IUser | null>(null);
   users = input<IUser[]>([]);
   
-  onTransfer = output<{ beneficiaryId: number; amount: number }>();
+  onTransfer = output<TransactionFormOutput>();
 }

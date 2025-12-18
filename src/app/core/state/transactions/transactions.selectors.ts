@@ -17,3 +17,8 @@ export const selectTransactionError = createSelector(
   selectTransactionState,
   (state) => state.error
 );
+
+export const selectLastTransaction = createSelector(
+    selectTransactionState,
+    (state) => state.lastTransaction
+);
