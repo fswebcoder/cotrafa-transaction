@@ -6,7 +6,7 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { DividerModule } from 'primeng/divider';
 import { ChipModule } from 'primeng/chip';
 import { TooltipModule } from 'primeng/tooltip';
-import { IUser } from '@app/feature/auth/domain/entities/user.entity';
+import { IUser } from '@app/shared/entities/user.entity';
 
 @Component({
   selector: 'cf-profile-dump',

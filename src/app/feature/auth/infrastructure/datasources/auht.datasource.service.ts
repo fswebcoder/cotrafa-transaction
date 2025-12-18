@@ -2,7 +2,7 @@ import { inject, Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "@app/enviromments/environment";
 import { IGeneralResponse } from "@app/shared/models/general_response.model";
-import { ILoginResponseDto } from "../../domain/dtos/user-response.dto";
+import { ILoginResponseDto } from "@app/shared/dtos/user-response.dto";
 import { LoginDto } from "../../domain/dtos/login.dto";
 import { Observable } from "rxjs";
 

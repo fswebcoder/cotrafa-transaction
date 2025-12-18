@@ -10,10 +10,10 @@ export const dashboardRoutes: Routes = [
         path: 'profile',
         loadComponent: () => import('@feature/dashboard/modules/profile/ui/pages/profile-page/profile-page').then(m => m.ProfilePage)
       },
-      // {
-      //   path: 'transactions',
-      //   // loadComponent: () => import('./ui/pages/transactions/transactions.page').then(m => m.TransactionsPage)
-      // },
+      {
+        path: 'transactions',
+        loadComponent: () => import('@feature/dashboard/modules/transactions/ui/pages/transaction-page/transaction-page').then(m => m.TransactionPage)
+      },
       // {
       //   path: 'history',
       //   // loadComponent: () => import('./ui/pages/history/history.page').then(m => m.HistoryPage)

@@ -18,4 +18,3 @@ export interface ILoginResponseDto {
   token: string;
   user: IUserDto;
 }
-
