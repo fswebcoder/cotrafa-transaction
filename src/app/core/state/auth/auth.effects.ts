@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, exhaustMap } from 'rxjs/operators';
+import { catchError, map, exhaustMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { AuthActions } from './auth.actions';
 import { AuthUseCase } from '@app/feature/auth/domain/usecases/auth.usecase';
@@ -25,6 +25,16 @@ export class AuthEffects {
                 )
             )
         )
+    );
+
+    loginSuccess$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(AuthActions.loginSuccess),
+            tap(({ user }) => {
+                sessionStorage.setItem('token', user.token || '');
+            })
+        ),
+        { dispatch: false }
     );
 
 

@@ -1,0 +1,50 @@
+<p-floatlabel variant="on">
+  @if (icon()) {
+    <p-icon-field>
+      <p-inputicon [class]="icon()" />
+      <ng-container [ngTemplateOutlet]="input"></ng-container>
+    </p-icon-field>
+  } @else if (type() === 'password') {
+    <p-password
+      [formControl]="control"
+      [feedback]="false"
+      toggleMask
+      [inputId]="id"
+      styleClass="w-full"
+      inputStyleClass="w-full p-inputtext-sm p-inputtext  p-2 border-round-xl"
+  
+      (onBlur)="onBlur()"
+    />
+  } @else {
+    <ng-container [ngTemplateOutlet]="input"></ng-container>
+  }
+  <label [for]="id">{{ label() }}</label>
+</p-floatlabel>
+
+<div sviFormError [errorMessage]="errorMessage" [show]="hasErrors"></div>
+
+<ng-template #input>
+  <input
+    [mask]="mask() || ''"
+    [suffix]="suffix()"
+    [prefix]="prefix()"
+    [allowNegativeNumbers]="allowNegativeNumbers()"
+    [thousandSeparator]="thousandSeparator()"
+    [decimalMarker]="decimalMarker()"
+    [inputTransformFn]="inputTransformFn()"
+    [outputTransformFn]="customOutputTransformFn()"
+    pInputText
+    [formControl]="control"
+    [id]="id"
+    [type]="type()"
+    class="w-full border-round-xl "
+    [style]="{
+      width: '100%',
+      'text-align': type() === 'number' ? 'right' : 'left',
+      'text-transform': uppercase() ? 'uppercase' : 'none',
+      'padding': '-10px'
+    }"
+    (blur)="onBlur()"
+  />
+</ng-template>
+
