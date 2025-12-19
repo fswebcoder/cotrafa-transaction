@@ -1,0 +1,65 @@
+<p-card styleClass="h-full shadow-2 border-round-2xl surface-card text-center">
+    <div class="flex flex-column align-items-center justify-content-center p-3">
+        <div class="w-4rem h-4rem bg-green-100 border-circle flex align-items-center justify-content-center mb-3 animate-scalein">
+            <i class="pi pi-check text-3xl text-green-600"></i>
+        </div>
+        
+        <h2 class="text-xl font-bold text-900 m-0 mb-1">¡Transferencia Exitosa!</h2>
+        <p class="text-600 mb-3 text-sm">Tu dinero ha sido enviado correctamente</p>
+
+        <div class="surface-50 p-3 border-round-xl border-1 surface-border w-full mb-3">
+            <div class="flex justify-content-between mb-2">
+                <span class="text-600 text-sm">Monto enviado</span>
+                <span class="font-bold text-900 text-sm">{{ transaction().amount | currency:'USD':'symbol':'1.0-0' }}</span>
+            </div>
+            <div class="flex justify-content-between mb-2">
+                <span class="text-600 text-sm">Destinatario</span>
+                <span class="font-bold text-900 text-sm">{{ transaction().beneficiaryName }}</span>
+            </div>
+            <div class="flex justify-content-between align-items-center">
+                <span class="text-600 text-sm">Fecha</span>
+                <span class="text-900 text-sm">{{ transaction().date | date:'medium' }}</span>
+            </div>
+        </div>
+
+        <div class="w-full bg-blue-50 p-3 border-round-xl border-1 border-blue-100 mb-3">
+            <div class="flex flex-column gap-2">
+                <span class="text-blue-700 text-sm font-medium">CUS (Código Único de Seguridad)</span>
+                
+                <div class="flex align-items-center gap-2 bg-white p-2 border-round border-1 surface-border shadow-1">
+                    <i class="pi pi-shield text-blue-500 text-lg ml-1"></i>
+                    <div class="flex-1 overflow-hidden text-left" style="min-width: 0;">
+                        <code class="text-sm font-mono text-900 white-space-nowrap block overflow-hidden text-overflow-ellipsis" 
+                              [title]="showOriginalCus() ? transaction().cus : transaction().encryptedCus">
+                            {{ showOriginalCus() ? transaction().cus : transaction().encryptedCus }}
+                        </code>
+                    </div>
+                    <p-button 
+                        [icon]="copied() ? 'pi pi-check' : 'pi pi-copy'" 
+                        styleClass="p-button-rounded p-button-text p-button-sm w-2rem h-2rem"
+                        [ngClass]="copied() ? 'p-button-success' : 'p-button-secondary'"
+                        (onClick)="copyToClipboard()"
+                        [pTooltip]="copied() ? '¡Copiado!' : 'Copiar CUS'"
+                        tooltipPosition="top">
+                    </p-button>
+                </div>
+
+                <p-button 
+                    [label]="showOriginalCus() ? 'Ver CUS Encriptado' : 'Ver CUS Original'" 
+                    [icon]="showOriginalCus() ? 'pi pi-lock' : 'pi pi-eye'" 
+                    link="true"
+                    styleClass="p-0 text-xs mt-1"
+                    (onClick)="toggleCusVisibility()">
+                </p-button>
+            </div>
+        </div>
+
+        <cf-custom-button 
+            label="Nueva Transferencia" 
+            icon="pi pi-refresh" 
+            [fullWidth]="true"
+            variant="primary"
+            (onClick)="onNewTransaction.emit()">
+        </cf-custom-button>
+    </div>
+</p-card>

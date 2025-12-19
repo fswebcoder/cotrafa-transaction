@@ -1,0 +1,65 @@
+<p-card styleClass="h-full shadow-2 border-round-2xl surface-card">
+  <ng-template pTemplate="header">
+    <div class="px-4 pt-4 pb-2">
+      <h2 class="m-0 text-2xl font-bold text-900">Nueva Transferencia</h2>
+      <p class="text-600 mt-2 mb-0">Completa los datos para realizar el envío</p>
+    </div>
+  </ng-template>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-column gap-4 mt-3">
+    
+    <div class="flex flex-column gap-2">
+      <cf-custom-select
+        label="Destinatario"
+        [options]="userOptions()"
+        optionLabel="label"
+        optionValue="value"
+        [filter]="true"
+        [showClear]="true"
+        formControlName="beneficiary">
+      </cf-custom-select>
+    </div>
+
+    <div *ngIf="selectedBeneficiary" class="bg-blue-50 p-3 border-round-xl border-1 border-blue-100 flex align-items-center gap-3 animate-fade-in transition-duration-300">
+      <div class="w-3rem h-3rem bg-white border-circle flex align-items-center justify-content-center shadow-1 text-xl font-bold text-blue-600">
+        {{ selectedBeneficiary?.user_name?.charAt(0) }}{{ selectedBeneficiary?.last_name?.charAt(0) }}
+      </div>
+      <div class="flex flex-column">
+        <span class="font-bold text-900">{{ selectedBeneficiary?.user_name }} {{ selectedBeneficiary?.last_name }}</span>
+        <span class="text-sm text-700">CC: {{ selectedBeneficiary?.document_number }}</span>
+        <span class="text-xs text-600 mt-1 flex align-items-center gap-1">
+          <i class="pi pi-credit-card text-xs"></i>
+          {{ selectedBeneficiary?.user_accounts?.[0]?.account_number }} - {{ selectedBeneficiary?.user_accounts?.[0]?.account_alias }}
+        </span>
+      </div>
+    </div>
+
+    <div class="flex flex-column gap-2">
+      <cf-custom-input 
+        formControlName="amount" 
+        label="Monto a transferir"
+        mask="separator.0" 
+        thousandSeparator=","
+        decimalMarker="."
+        prefix="$ "
+        type="text"
+        [errorMessages]="{ maxAmount: 'El monto excede tu saldo disponible', required: 'Ingresa un monto válido' }">
+      </cf-custom-input>
+    </div>
+
+    <p-divider styleClass="my-3"></p-divider>
+
+     <div class="flex justify-content-end">
+       <cf-custom-button 
+         label="Confirmar Transferencia" 
+         icon="pi pi-send" 
+         iconPos="right"
+         [disabled]="form.invalid || !selectedBeneficiary"
+         type="submit"
+         [fullWidth]="true"
+         variant="primary">
+       </cf-custom-button>
+     </div>
+    
+  </form>
+</p-card>

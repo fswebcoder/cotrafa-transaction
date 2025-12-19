@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { AuthActions } from './auth.actions';
-import { IUser } from '@app/feature/auth/domain/entities/user.entity';
+import { IUser } from '@app/shared/entities/user.entity';
 
 export interface AuthState {
     user: IUser | null;

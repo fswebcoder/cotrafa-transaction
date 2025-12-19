@@ -3,8 +3,8 @@ import { IAuthRepository } from "../../domain/repositories/auth.repository";
 import { AuthDataSourceService } from "../datasources/auht.datasource.service";
 import { LoginDto } from "../../domain/dtos/login.dto";
 import { IGeneralResponse } from "@app/shared/models/general_response.model";
-import { IUser } from "../../domain/entities/user.entity";
-import { toUserEntity } from "../../domain/mapper/user.mapper";
+import { IUser } from "@app/shared/entities/user.entity";
+import { toUserEntity } from "@app/shared/mappers/user.mapper";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 

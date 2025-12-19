@@ -1,5 +1,5 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { IUser } from '@app/feature/auth/domain/entities/user.entity';
+import { IUser } from '@app/shared/entities/user.entity';
 import { LoginDto } from '@app/feature/auth/domain/dtos/login.dto';
 
 export const AuthActions = createActionGroup({
