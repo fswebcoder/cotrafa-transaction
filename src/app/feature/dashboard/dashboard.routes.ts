@@ -14,10 +14,10 @@ export const dashboardRoutes: Routes = [
         path: 'transactions',
         loadComponent: () => import('@feature/dashboard/modules/transactions/ui/pages/transaction-page/transaction-page').then(m => m.TransactionPage)
       },
-      // {
-      //   path: 'history',
-      //   // loadComponent: () => import('./ui/pages/history/history.page').then(m => m.HistoryPage)
-      // },
+      {
+        path: 'history',
+        loadComponent: () => import('@feature/dashboard/modules/history/ui/pages/history-smart/history-smart').then(m => m.HistorySmart)
+      },
       {
         path: '',
         redirectTo: 'profile',

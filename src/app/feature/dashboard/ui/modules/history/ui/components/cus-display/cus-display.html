@@ -1,0 +1,27 @@
+<div class="flex align-items-center gap-2">
+    <div class="flex-1 overflow-hidden" style="max-width: 200px;">
+        <div class="cus-text text-900 white-space-nowrap overflow-hidden text-overflow-ellipsis" 
+             [title]="showOriginal() ? cus() : protectedCus()">
+            {{ showOriginal() ? cus() : protectedCus() }}
+        </div>
+    </div>
+    
+    <div class="flex gap-1">
+        <button pButton 
+                [icon]="showOriginal() ? 'pi pi-eye-slash' : 'pi pi-eye'" 
+                class="p-button-rounded p-button-text p-button-sm w-2rem h-2rem text-600"
+                (click)="toggleVisibility()"
+                [pTooltip]="showOriginal() ? 'Ocultar' : 'Mostrar'"
+                tooltipPosition="top">
+        </button>
+        
+        <button pButton 
+                [icon]="copied() ? 'pi pi-check' : 'pi pi-copy'" 
+                class="p-button-rounded p-button-text p-button-sm w-2rem h-2rem"
+                [ngClass]="copied() ? 'text-green-500' : 'text-600'"
+                (click)="copyToClipboard()"
+                [pTooltip]="copied() ? '¡Copiado!' : 'Copiar'"
+                tooltipPosition="top">
+        </button>
+    </div>
+</div>

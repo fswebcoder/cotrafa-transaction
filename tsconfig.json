@@ -41,6 +41,9 @@
       ],
       "@feature/dashboard/*": [
         "src/app/feature/dashboard/ui/*"
+      ],
+      "@feature/dashboard/history/*": [
+        "src/app/feature/dashboard/ui/modules/history/ui/*"
       ]
     }
   },

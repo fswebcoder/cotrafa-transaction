@@ -25,7 +25,7 @@ export class CustomButton {
       case 'secondary':
         return 'secondary';
       case 'white':
-        return 'secondary'; // We will style this with a custom class or outlined
+        return 'secondary';
       default:
         return 'primary';
     }
