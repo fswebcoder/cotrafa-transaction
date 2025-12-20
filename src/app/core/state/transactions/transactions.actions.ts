@@ -32,11 +32,30 @@ export const saveTransaction = createAction(
 
 export const saveTransactionSuccess = createAction(
   '[Transactions] Save Transaction Success',
-  props<{ transaction: ITransaction }>()
+  props<{ transaction: ITransaction; userId: number }>()
 );
 
 export const saveTransactionFailure = createAction(
   '[Transactions] Save Transaction Failure',
+  props<{ error: string }>()
+);
+
+export const depositToAccount = createAction(
+  '[Transactions] Deposit To Account',
+  props<{
+    accountNumber: string;
+    amount: number;
+    userId: number;
+  }>()
+);
+
+export const depositToAccountSuccess = createAction(
+  '[Transactions] Deposit To Account Success',
+  props<{ userId: number }>()
+);
+
+export const depositToAccountFailure = createAction(
+  '[Transactions] Deposit To Account Failure',
   props<{ error: string }>()
 );
 

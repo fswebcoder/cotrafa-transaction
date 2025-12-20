@@ -3,10 +3,11 @@ import { RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { ToastModule } from 'primeng/toast';
 import { AuthActions } from './core/state/auth/auth.actions';
+import { LoadingOverlay } from './shared/components/loading-overlay/loading-overlay';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, ToastModule],
+  imports: [RouterOutlet, ToastModule, LoadingOverlay],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

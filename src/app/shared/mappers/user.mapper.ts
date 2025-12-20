@@ -24,11 +24,15 @@ export function toUserListEntity(usersDto: IUserDto[]): IUser[] {
   return usersDto.map(toUserFromDto);
 }
 
-function toAccountEntity(accountDto: IAccountDto): IAccount {
+export function toAccountEntity(accountDto: IAccountDto): IAccount {
   return {
     account_id: accountDto.id,
     account_number: accountDto.accountNumber,
     account_alias: accountDto.alias,
     account_balance: accountDto.balance
   };
+}
+
+export function toAccountListEntity(accountsDto: IAccountDto[] = []): IAccount[] {
+  return accountsDto.map(toAccountEntity);
 }

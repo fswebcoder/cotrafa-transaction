@@ -33,9 +33,23 @@ export class AuthEffects {
         this.actions$.pipe(
             ofType(AuthActions.loginSuccess),
             tap(({ user }) => {
+                const token = user.token;
+                if (token) sessionStorage.setItem('token', token);
+                else sessionStorage.removeItem('token');
                 const userWithoutToken = { ...user, token: '' };
                 sessionStorage.setItem('user', JSON.stringify(userWithoutToken));
                 this.router.navigate(['/dashboard']);
+            })
+        ),
+        { dispatch: false }
+    );
+
+    updateUser$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(AuthActions.updateUser),
+            tap(({ user }) => {
+                const userWithoutToken = { ...user, token: '' };
+                sessionStorage.setItem('user', JSON.stringify(userWithoutToken));
             })
         ),
         { dispatch: false }
@@ -52,6 +66,32 @@ export class AuthEffects {
                 return AuthActions.checkAuthComplete();
             })
         )
+    );
+
+    logout$ = createEffect(
+        () =>
+            this.actions$.pipe(
+                ofType(AuthActions.logout),
+                tap(() => {
+                    try {
+                        sessionStorage.clear();
+                    } catch {}
+                    try {
+                        localStorage.clear();
+                    } catch {}
+
+                    const maybeCaches = (globalThis as any).caches as CacheStorage | undefined;
+                    if (maybeCaches?.keys && maybeCaches?.delete) {
+                        maybeCaches
+                            .keys()
+                            .then((keys) => Promise.all(keys.map((key) => maybeCaches.delete(key))))
+                            .catch(() => undefined);
+                    }
+
+                    this.router.navigate(['/login']);
+                })
+            ),
+        { dispatch: false }
     );
 
 
