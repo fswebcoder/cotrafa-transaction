@@ -1,0 +1,66 @@
+<p-card styleClass="h-full shadow-1 border-round-xl">
+  <ng-container *ngIf="user(); else loadingProfile">
+    <div class="flex flex-column align-items-center text-center p-3">
+      <div class="relative mb-4">
+        <div
+          class="w-8rem h-8rem border-circle bg-primary-50 flex align-items-center justify-content-center border-2 border-primary"
+        >
+          <span class="text-4xl font-bold text-primary"
+            >{{ user()?.user_name?.charAt(0) }}{{ user()?.last_name?.charAt(0) }}</span
+          >
+        </div>
+        <div
+          class="absolute bottom-0 right-0 bg-green-500 border-circle w-2rem h-2rem border-2 border-white"
+        ></div>
+      </div>
+
+      <h2 class="text-2xl font-bold text-900 m-0 mb-1">{{ user()?.user_name }} {{ user()?.last_name }}</h2>
+      <span class="text-600 mb-3">Cliente Cotrafa</span>
+
+      <p-chip
+        [label]="user()?.document_type + ': ' + user()?.document_number"
+        icon="pi pi-id-card"
+        styleClass="bg-primary-50 text-primary font-medium"
+      ></p-chip>
+    </div>
+
+    <p-divider></p-divider>
+
+    <div class="p-3">
+      <h3 class="text-lg font-medium text-900 mb-3">Detalles de Usuario</h3>
+      <div class="flex justify-content-between align-items-center mb-3">
+        <span class="text-600"><i class="pi pi-hashtag mr-2 text-primary"></i>ID Usuario</span>
+        <span class="font-medium text-900">{{ user()?.user_id }}</span>
+      </div>
+      <div class="flex justify-content-between align-items-center">
+        <span class="text-600"><i class="pi pi-shield mr-2 text-primary"></i>Estado</span>
+        <span
+          class="inline-flex align-items-center py-1 px-2 border-round-lg bg-green-100 text-green-700 text-sm font-bold"
+          >Activo</span
+        >
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #loadingProfile>
+    <div class="flex flex-column align-items-center p-3">
+      <p-skeleton shape="circle" size="8rem" styleClass="mb-4"></p-skeleton>
+      <p-skeleton width="12rem" height="2rem" styleClass="mb-2"></p-skeleton>
+      <p-skeleton width="8rem" styleClass="mb-4"></p-skeleton>
+      <p-skeleton width="10rem" height="2rem" styleClass="mb-4" borderRadius="16px"></p-skeleton>
+    </div>
+    <p-divider></p-divider>
+    <div class="p-3">
+      <p-skeleton width="8rem" styleClass="mb-3"></p-skeleton>
+      <div class="flex justify-content-between mb-3">
+        <p-skeleton width="6rem"></p-skeleton>
+        <p-skeleton width="3rem"></p-skeleton>
+      </div>
+      <div class="flex justify-content-between">
+        <p-skeleton width="6rem"></p-skeleton>
+        <p-skeleton width="4rem"></p-skeleton>
+      </div>
+    </div>
+  </ng-template>
+</p-card>
+

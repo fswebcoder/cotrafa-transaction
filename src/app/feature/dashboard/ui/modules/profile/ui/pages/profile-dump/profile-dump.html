@@ -1,124 +1,26 @@
 <div class="grid">
-  <!-- Profile Information Column -->
   <div class="col-12 md:col-4">
-    <p-card styleClass="h-full shadow-1 border-round-xl">
-      <ng-container *ngIf="user(); else loadingProfile">
-        <div class="flex flex-column align-items-center text-center p-3">
-          <div class="relative mb-4">
-            <div class="w-8rem h-8rem border-circle bg-primary-50 flex align-items-center justify-content-center border-2 border-primary">
-              <span class="text-4xl font-bold text-primary">{{ user()?.user_name?.charAt(0) }}{{ user()?.last_name?.charAt(0) }}</span>
-            </div>
-            <div class="absolute bottom-0 right-0 bg-green-500 border-circle w-2rem h-2rem border-2 border-white"></div>
-          </div>
-          
-          <h2 class="text-2xl font-bold text-900 m-0 mb-1">{{ user()?.user_name }} {{ user()?.last_name }}</h2>
-          <span class="text-600 mb-3">Cliente Cotrafa</span>
-          
-          <p-chip [label]="user()?.document_type + ': ' + user()?.document_number" icon="pi pi-id-card" styleClass="bg-primary-50 text-primary font-medium"></p-chip>
-        </div>
-
-        <p-divider></p-divider>
-
-        <div class="p-3">
-          <h3 class="text-lg font-medium text-900 mb-3">Detalles de Usuario</h3>
-          <div class="flex justify-content-between align-items-center mb-3">
-            <span class="text-600"><i class="pi pi-hashtag mr-2 text-primary"></i>ID Usuario</span>
-            <span class="font-medium text-900">{{ user()?.user_id }}</span>
-          </div>
-          <div class="flex justify-content-between align-items-center">
-             <span class="text-600"><i class="pi pi-shield mr-2 text-primary"></i>Estado</span>
-             <span class="inline-flex align-items-center py-1 px-2 border-round-lg bg-green-100 text-green-700 text-sm font-bold">Activo</span>
-          </div>
-        </div>
-      </ng-container>
-
-      <ng-template #loadingProfile>
-        <div class="flex flex-column align-items-center p-3">
-            <p-skeleton shape="circle" size="8rem" styleClass="mb-4"></p-skeleton>
-            <p-skeleton width="12rem" height="2rem" styleClass="mb-2"></p-skeleton>
-            <p-skeleton width="8rem" styleClass="mb-4"></p-skeleton>
-            <p-skeleton width="10rem" height="2rem" borderRadius="16px"></p-skeleton>
-        </div>
-        <p-divider></p-divider>
-        <div class="p-3">
-            <p-skeleton width="8rem" styleClass="mb-3"></p-skeleton>
-            <div class="flex justify-content-between mb-3">
-                <p-skeleton width="6rem"></p-skeleton>
-                <p-skeleton width="3rem"></p-skeleton>
-            </div>
-             <div class="flex justify-content-between">
-                <p-skeleton width="6rem"></p-skeleton>
-                <p-skeleton width="4rem"></p-skeleton>
-            </div>
-        </div>
-      </ng-template>
-    </p-card>
+    <cf-profile-summary-card [user]="user()"></cf-profile-summary-card>
   </div>
 
-  <!-- Accounts/Products Column -->
   <div class="col-12 md:col-8">
     <div class="flex flex-column gap-4">
-      <!-- Welcome Banner -->
-      <div class="surface-card p-4 shadow-1 border-round-xl border-left-3 border-primary flex justify-content-between align-items-center flex-wrap gap-3">
-        <div>
-           <h1 class="text-2xl font-bold text-900 m-0 mb-2">Resumen de Productos</h1>
-           <p class="text-600 m-0">Gestiona tus cuentas y consulta tus saldos disponibles.</p>
-        </div>
-        <p-button label="Nueva Transacción" icon="pi pi-plus" styleClass="p-button-rounded"></p-button>
-      </div>
+      <cf-products-summary-header
+        [depositDisabled]="!user()?.user_accounts?.length"
+        (depositClick)="openDeposit()"
+      ></cf-products-summary-header>
 
-      <!-- Accounts Grid -->
-      <div class="grid">
-        <ng-container *ngIf="user(); else loadingAccounts">
-             <div *ngFor="let account of user()?.user_accounts" class="col-12 md:col-6">
-                <div class="surface-card p-4 shadow-1 border-round-xl h-full flex flex-column justify-content-between transition-colors hover:surface-50 cursor-pointer border-1 surface-border">
-                    <div class="flex justify-content-between align-items-start mb-4">
-                        <div class="flex align-items-center gap-3">
-                            <div class="w-3rem h-3rem bg-primary-50 border-circle flex align-items-center justify-content-center">
-                                <i class="pi pi-wallet text-xl text-primary"></i>
-                            </div>
-                            <div>
-                                <span class="text-600 text-sm block mb-1">Cuenta de Ahorros</span>
-                                <span class="text-900 font-bold text-lg">{{ account.account_alias || 'Cuenta Principal' }}</span>
-                            </div>
-                        </div>
-                         <i class="pi pi-ellipsis-v text-500 hover:text-900"></i>
-                    </div>
-
-                    <div>
-                        <span class="text-500 text-sm block mb-1">Saldo Disponible</span>
-                        <div class="text-3xl font-bold text-900 mb-3">{{ account.account_balance | currency }}</div>
-                        
-                        <div class="surface-100 border-round p-2 flex align-items-center justify-content-between">
-                            <span class="text-600 font-mono text-sm">{{ account.account_number }}</span>
-                            <i class="pi pi-copy text-primary cursor-pointer hover:text-primary-700" pTooltip="Copiar número" tooltipPosition="top"></i>
-                        </div>
-                    </div>
-                </div>
-             </div>
-        </ng-container>
-
-        <ng-template #loadingAccounts>
-            <div class="col-12 md:col-6" *ngFor="let i of [1,2]">
-                <div class="surface-card p-4 shadow-1 border-round-xl h-full border-1 surface-border">
-                    <div class="flex justify-content-between align-items-start mb-4">
-                        <div class="flex align-items-center gap-3">
-                            <p-skeleton shape="circle" size="3rem"></p-skeleton>
-                            <div>
-                                <p-skeleton width="6rem" styleClass="mb-1"></p-skeleton>
-                                <p-skeleton width="8rem"></p-skeleton>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                         <p-skeleton width="7rem" styleClass="mb-1"></p-skeleton>
-                         <p-skeleton width="10rem" height="2rem" styleClass="mb-3"></p-skeleton>
-                         <p-skeleton width="100%" height="2.5rem"></p-skeleton>
-                    </div>
-                </div>
-            </div>
-        </ng-template>
-      </div>
+      <cf-accounts-grid [accounts]="user()?.user_accounts ?? null"></cf-accounts-grid>
     </div>
   </div>
 </div>
+
+<cf-deposit-modal
+  [visible]="depositDialogVisible()"
+  (visibleChange)="handleDepositVisibleChange($event)"
+  [loading]="loading()"
+  [error]="error()"
+  [accountOptions]="accountOptions()"
+  [defaultAccountNumber]="defaultAccountNumber()"
+  (submit)="handleDepositSubmit($event)">
+</cf-deposit-modal>

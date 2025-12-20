@@ -1,9 +1,11 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
 import { DrawerModule } from 'primeng/drawer';
+import { AuthActions } from '@app/core/state/auth/auth.actions';
 
 @Component({
   selector: 'app-dashboard-layout',
@@ -13,6 +15,8 @@ import { DrawerModule } from 'primeng/drawer';
   styleUrl: './dashboard-layout.scss'
 })
 export class DashboardLayout {
+  private store = inject(Store);
+
   sidebarVisible = signal(false);
   
   menuItems = [
@@ -23,5 +27,9 @@ export class DashboardLayout {
 
   toggleSidebar() {
     this.sidebarVisible.update(v => !v);
+  }
+
+  logout() {
+    this.store.dispatch(AuthActions.logout());
   }
 }

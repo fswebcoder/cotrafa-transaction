@@ -50,6 +50,20 @@ export const transactionReducer = createReducer(
     error,
     loading: false
   })),
+  on(TransactionActions.depositToAccount, (state) => ({
+    ...state,
+    loading: true,
+    error: null
+  })),
+  on(TransactionActions.depositToAccountSuccess, (state) => ({
+    ...state,
+    loading: false
+  })),
+  on(TransactionActions.depositToAccountFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false
+  })),
     on(TransactionActions.resetTransactionState, (state) => ({
         ...state,
         lastTransaction: null,

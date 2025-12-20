@@ -15,6 +15,7 @@ import { environment } from './enviromments/environment';
 import { provideCore } from './core/providers/store/provide.core';
 import { credentialsInterceptor } from './core/interceptors/credentials.interceptor';
 import { versionInterceptor } from './core/interceptors/version.interceptor';
+import { loadingInterceptor } from './core/interceptors/loading.interceptor';
 export const ENVIRONMENT = new InjectionToken<Environment>('environment');
 
 const cfcPreset = definePreset(Nora, {
@@ -40,7 +41,7 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideAnimationsAsync(),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([credentialsInterceptor, versionInterceptor])),
+    provideHttpClient(withInterceptors([credentialsInterceptor, versionInterceptor, loadingInterceptor])),
     providePrimeNG({
       theme: {
         preset: cfcPreset,
