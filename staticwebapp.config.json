@@ -1,0 +1,9 @@
+{
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/assets/*", "/*.js", "/*.css", "/*.ico", "/browser/*"]
+  },
+  "platform": {
+    "apiRuntime": "node:20"
+  }
+}
