@@ -1,14 +1,12 @@
 
 export const environment = {
-  production: false,
+  production: true,
   cookie: {
     domain: 'localhost',
     sameSite: 'Lax',
     expires: 30
   },
   services: {
-
     apiUrl: 'https://cotrafa-transaction-back-production.up.railway.app/api/',
-   
   }
 };
