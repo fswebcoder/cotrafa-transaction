@@ -1,4 +1,3 @@
-import { isDevMode } from '@angular/core';
 
 export const environment = {
   production: false,
@@ -9,7 +8,7 @@ export const environment = {
   },
   services: {
 
-    apiUrl: isDevMode() ? 'http://localhost:8080/api/' : 'http://localhost:8443/api/',
+    apiUrl: 'https://cotrafa-transaction-back-production.up.railway.app/',
    
   }
 };
