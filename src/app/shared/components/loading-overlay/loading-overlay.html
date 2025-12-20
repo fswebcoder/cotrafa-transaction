@@ -1,0 +1,9 @@
+@if (loading()) {
+  <div class="fixed top-0 left-0 w-full h-full bg-black-alpha-30 flex align-items-center justify-content-center z-5">
+    <div class="surface-card p-4 border-round-xl shadow-3 flex flex-column align-items-center gap-3">
+      <p-progressSpinner styleClass="w-3rem h-3rem" strokeWidth="4"></p-progressSpinner>
+      <span class="text-700 font-medium">{{ message() || 'Cargando...' }}</span>
+    </div>
+  </div>
+}
+

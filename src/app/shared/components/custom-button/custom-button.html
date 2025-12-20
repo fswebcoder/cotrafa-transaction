@@ -1,0 +1,11 @@
+<p-button 
+    [label]="label()" 
+    [icon]="icon()" 
+    [loading]="loading()" 
+    [disabled]="disabled()" 
+    [type]="type()"
+    [severity]="severity()"
+    [outlined]="isOutlined()"
+    [styleClass]="(fullWidth() ? 'w-full ' : '') + 'border-round-xl'"
+    (onClick)="onClick.emit($event)">
+</p-button>

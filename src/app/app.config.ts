@@ -1,11 +1,23 @@
-import { ApplicationConfig, isDevMode, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { ApplicationConfig, InjectionToken, isDevMode, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
 import { definePreset } from '@primeuix/themes';
 import Nora from '@primeng/themes/nora';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { MessageService } from 'primeng/api';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
 import { routes } from './app.routes';
+import { ALL_REPOSITORIES } from './core/providers/repositories.provider';
+import { Environment } from './shared/models/environment';
+import { environment } from './enviromments/environment';
+import { provideCore } from './core/providers/store/provide.core';
+import { credentialsInterceptor } from './core/interceptors/credentials.interceptor';
+import { versionInterceptor } from './core/interceptors/version.interceptor';
+import { loadingInterceptor } from './core/interceptors/loading.interceptor';
+export const ENVIRONMENT = new InjectionToken<Environment>('environment');
+
 const cfcPreset = definePreset(Nora, {
     semantic: {
         primary: {
@@ -27,7 +39,9 @@ const cfcPreset = definePreset(Nora, {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
+    provideAnimationsAsync(),
     provideRouter(routes),
+    provideHttpClient(withInterceptors([credentialsInterceptor, versionInterceptor, loadingInterceptor])),
     providePrimeNG({
       theme: {
         preset: cfcPreset,
@@ -40,7 +54,10 @@ export const appConfig: ApplicationConfig = {
         }
       }
     }),
+    MessageService,
+  { provide: ENVIRONMENT, useValue: environment },
+    provideCore(),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
-
+    ...ALL_REPOSITORIES
   ]
 };

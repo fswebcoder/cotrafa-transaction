@@ -3,6 +3,13 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "type": "java",
+      "name": "TransaccionalApplication",
+      "request": "launch",
+      "mainClass": "com.cotrafa.transaccional.TransaccionalApplication",
+      "projectName": "transaccional-backend"
+    },
+    {
       "name": "ng serve",
       "type": "chrome",
       "request": "launch",

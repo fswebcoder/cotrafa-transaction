@@ -1,0 +1,26 @@
+<div class="grid">
+  <div class="col-12 md:col-4">
+    <cf-profile-summary-card [user]="user()"></cf-profile-summary-card>
+  </div>
+
+  <div class="col-12 md:col-8">
+    <div class="flex flex-column gap-4">
+      <cf-products-summary-header
+        [depositDisabled]="!user()?.user_accounts?.length"
+        (depositClick)="openDeposit()"
+      ></cf-products-summary-header>
+
+      <cf-accounts-grid [accounts]="user()?.user_accounts ?? null"></cf-accounts-grid>
+    </div>
+  </div>
+</div>
+
+<cf-deposit-modal
+  [visible]="depositDialogVisible()"
+  (visibleChange)="handleDepositVisibleChange($event)"
+  [loading]="loading()"
+  [error]="error()"
+  [accountOptions]="accountOptions()"
+  [defaultAccountNumber]="defaultAccountNumber()"
+  (submit)="handleDepositSubmit($event)">
+</cf-deposit-modal>

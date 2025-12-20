@@ -1,0 +1,25 @@
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-column gap-2">
+  <div class="flex flex-column gap-3">
+    <div class="flex flex-column gap-2">
+      <cf-custom-input id="username" label="Usuario" formControlName="username" type="text">
+      </cf-custom-input>
+    </div>
+    <div class="flex flex-column gap-">
+      <cf-custom-input id="password" label="Contraseña" formControlName="password" type="password">
+      </cf-custom-input>
+    </div>
+  </div>
+
+  <div class="flex flex-column gap-2 mt-4">
+    <cf-custom-button
+      label="Ingresar"
+      variant="primary"
+      icon="pi pi-sign-in"
+      [fullWidth]="true"
+      [loading]="loading()"
+      (onClick)="onSubmit()"
+      [disabled]="loginForm.invalid"
+    >
+    </cf-custom-button>
+  </div>
+</form>

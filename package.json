@@ -3,10 +3,11 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start:dev": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "install": "npm install --legacy-peer-deps"
   },
   "prettier": {
     "printWidth": 100,
@@ -35,6 +36,7 @@
     "@primeng/themes": "^21.0.2",
     "@primeuix/themes": "^2.0.2",
     "crypto-js": "^4.2.0",
+    "ngx-mask": "^20.0.3",
     "primeflex": "^4.0.0",
     "primeicons": "^7.0.0",
     "primeng": "^21.0.2",
@@ -46,6 +48,7 @@
     "@angular/build": "^21.0.3",
     "@angular/cli": "^21.0.3",
     "@angular/compiler-cli": "^21.0.0",
+    "@types/crypto-js": "^4.2.2",
     "jsdom": "^27.1.0",
     "typescript": "~5.9.2",
     "vitest": "^4.0.8"
