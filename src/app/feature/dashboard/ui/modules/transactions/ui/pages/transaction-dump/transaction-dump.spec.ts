@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideNgxMask } from 'ngx-mask';
 
 import { TransactionDump } from './transaction-dump';
 
@@ -8,7 +9,8 @@ describe('TransactionDump', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TransactionDump]
+      imports: [TransactionDump],
+      providers: [...provideNgxMask()]
     })
     .compileComponents();
 
@@ -17,7 +19,7 @@ describe('TransactionDump', () => {
     await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it('Debería crear el componente', () => {
     expect(component).toBeTruthy();
   });
 });

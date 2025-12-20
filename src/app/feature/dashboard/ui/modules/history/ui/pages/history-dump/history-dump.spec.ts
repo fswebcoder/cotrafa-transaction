@@ -16,7 +16,7 @@ describe('HistoryDump', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('Debería crear el componente', () => {
     expect(component).toBeTruthy();
   });
 });

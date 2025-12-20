@@ -9,6 +9,7 @@ export interface IHistory {
   id: number;
   sourceAccount: IAccountSummary;
   destinationAccount: IAccountSummary;
+  movement?: 'ENTRADA' | 'SALIDA';
   amount: number;
   cus: string;
   status: string;

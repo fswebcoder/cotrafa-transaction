@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideNgxMask } from 'ngx-mask';
 
 import { LoginDump } from './login-dump';
 
@@ -8,7 +9,8 @@ describe('LoginDump', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LoginDump]
+      imports: [LoginDump],
+      providers: [...provideNgxMask()]
     })
     .compileComponents();
 
@@ -17,7 +19,7 @@ describe('LoginDump', () => {
     await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it('Debería crear el componente', () => {
     expect(component).toBeTruthy();
   });
 });

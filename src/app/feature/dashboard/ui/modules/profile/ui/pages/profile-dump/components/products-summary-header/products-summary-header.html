@@ -13,7 +13,12 @@
       [disabled]="depositDisabled()"
       (onClick)="depositClick.emit()"
     ></p-button>
-    <p-button label="Nueva Transacción" icon="pi pi-plus" styleClass="p-button-rounded"></p-button>
+    <p-button
+      label="Nueva Transacción"
+      icon="pi pi-plus"
+      styleClass="p-button-rounded"
+      [routerLink]="['/dashboard/transactions']"
+    ></p-button>
   </div>
 </div>
 

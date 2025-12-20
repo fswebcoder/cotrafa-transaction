@@ -41,6 +41,24 @@ Todos los comandos se ejecutan desde la raíz del proyecto.
   npm run test
   ```
 
+### Pruebas y cobertura
+
+El script `npm run test` ejecuta `ng test`.
+
+- Ejecutar pruebas una sola vez (sin watch):
+
+  ```bash
+  npm run test -- --watch=false
+  ```
+
+- Generar reporte de cobertura (HTML):
+
+  ```bash
+    npx ng test --watch=false --coverage --coverage-reporters=html --coverage-reporters=text-summary
+  ```
+
+El archivo de entrada del reporte suele quedar en `coverage/cotrafa-transaccional/index.html`.
+
 - Ejecutar Angular CLI directamente (útil para `version`, `generate`, etc.):
 
   ```bash
@@ -143,3 +161,35 @@ Inicialización de sesión:
   - `/dashboard/profile`
   - `/dashboard/transactions`
   - `/dashboard/history`
+
+## Guards (protección de rutas)
+
+La app protege el acceso al dashboard con guards funcionales (`CanMatchFn`) definidos directamente en `src/app/app.routes.ts`:
+
+- `authGuard` (`src/app/app.routes.ts:14`): permite entrar a `/dashboard` solo si existe una sesión válida; si no, redirige a `/login`.
+- `loginGuard` (`src/app/app.routes.ts:19`): evita que un usuario con sesión activa vuelva a `/login`; redirige a `/dashboard`.
+
+La validación de sesión (`hasValidSession`) revisa que existan `token` y `user` en `sessionStorage` (`src/app/app.routes.ts:4`). El `token` se persiste en `sessionStorage` al hacer login exitoso (`src/app/core/state/auth/auth.effects.ts:37`).
+
+## Despliegue (Azure App Service) vía GitHub Actions
+
+El despliegue está automatizado con GitHub Actions en `.github/workflows/`:
+
+- Workflows: `.github/workflows/azure-webapps-node.yml` y `.github/workflows/develop_transactions-app.yml`.
+- Disparador: `push` a la rama `develop` (y ejecución manual con `workflow_dispatch`).
+- Build: instala dependencias y compila en `production` (`npm run build -- --configuration production`).
+- Deploy: publica el contenido de `dist/cotrafa-transaccional/browser` en Azure Web App `transactions-app` usando `azure/webapps-deploy@v2` y el secreto `AZURE_WEBAPP_PUBLISH_PROFILE`.
+
+URL desplegada:
+
+- `https://transactions-app-bwbtdsbvd5ceg0dq.canadacentral-01.azurewebsites.net/dashboard/history`
+
+## Usuarios de prueba
+
+Credenciales cargadas en el backend para pruebas:
+
+- Admin: `admin` / `admin123`
+- Usuario: `mateo` / `mateo123`
+- Usuario: `andres` / `andres123`
+- Usuario: `kelly` / `kelly123`
+- Usuario: `rafael` / `rafael123`

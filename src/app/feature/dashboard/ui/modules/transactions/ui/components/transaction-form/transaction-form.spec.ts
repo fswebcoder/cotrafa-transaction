@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideNgxMask } from 'ngx-mask';
 
 import { TransactionForm } from './transaction-form';
 
@@ -8,7 +9,8 @@ describe('TransactionForm', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TransactionForm]
+      imports: [TransactionForm],
+      providers: [...provideNgxMask()]
     })
     .compileComponents();
 
@@ -17,7 +19,7 @@ describe('TransactionForm', () => {
     await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it('Debería crear el componente', () => {
     expect(component).toBeTruthy();
   });
 });

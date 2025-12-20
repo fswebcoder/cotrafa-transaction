@@ -1,9 +1,10 @@
 import { Component, input, output } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'cf-products-summary-header',
-  imports: [ButtonModule],
+  imports: [ButtonModule, RouterLink],
   templateUrl: './products-summary-header.html',
   styleUrl: './products-summary-header.scss',
 })

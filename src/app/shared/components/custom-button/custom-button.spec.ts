@@ -18,11 +18,11 @@ describe('CustomButton', () => {
     await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it('Debería crear el componente', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should have default variant primary', () => {
+  it('Debería tener el variant por defecto primary', () => {
     expect(component.variant()).toBe('primary');
   });
 });

@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { map, mergeMap, catchError, withLatestFrom, exhaustMap } from 'rxjs/operators';
+import { map, mergeMap, catchError, withLatestFrom, exhaustMap, tap } from 'rxjs/operators';
 import * as TransactionActions from './transactions.actions';
 import { IUsersRepository } from '@app/feature/dashboard/ui/modules/transactions/domain/repositories/users.repository';
 import { CusEncryptionService } from '@app/core/services/cus-encryption.service';
@@ -11,6 +11,7 @@ import { TransactionRequestDto } from '@app/feature/dashboard/ui/modules/transac
 import { Store } from '@ngrx/store';
 import { selectUser } from '@app/core/state/auth/auth.selectors';
 import { AuthActions } from '@app/core/state/auth/auth.actions';
+import { ToastService } from '@app/shared/services/toast.service';
 
 @Injectable()
 export class TransactionEffects {
@@ -19,14 +20,25 @@ export class TransactionEffects {
   private transactionsRepository = inject(ITransactionsRepository);
   private cusService = inject(CusEncryptionService);
   private store = inject(Store);
+  private toast = inject(ToastService);
 
   loadUsers$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TransactionActions.loadUsers),
       mergeMap(() =>
         this.usersRepository.getUsers().pipe(
-          map(response => TransactionActions.loadUsersSuccess({ users: response.data })),
-          catchError(error => of(TransactionActions.loadUsersFailure({ error: error.message })))
+          map((response) =>
+            response.success
+              ? TransactionActions.loadUsersSuccess({ users: response.data })
+              : TransactionActions.loadUsersFailure({ error: response.message || 'Error cargando usuarios' })
+          ),
+          catchError((error) =>
+            of(
+              TransactionActions.loadUsersFailure({
+                error: error?.error?.message || error?.message || 'Error cargando usuarios'
+              })
+            )
+          )
         )
       )
     )
@@ -48,7 +60,10 @@ export class TransactionEffects {
           };
 
           return this.transactionsRepository.saveTransaction(request).pipe(
-            map(() => {
+            map((response) => {
+              if (!response.success) {
+                return TransactionActions.saveTransactionFailure({ error: response.message || 'Error procesando transferencia' });
+              }
               const transaction: ITransaction = {
                 id: crypto.randomUUID(),
                 sourceAccountId: action.sourceAccountId,
@@ -62,10 +77,16 @@ export class TransactionEffects {
 
               return TransactionActions.saveTransactionSuccess({ transaction, userId: action.userId });
             }),
-            catchError(error => of(TransactionActions.saveTransactionFailure({ error: error.message || 'Error processing transaction' })))
+            catchError((error) =>
+              of(
+                TransactionActions.saveTransactionFailure({
+                  error: error?.error?.message || error?.message || 'Error procesando transferencia'
+                })
+              )
+            )
           );
         } catch (error: any) {
-          return of(TransactionActions.saveTransactionFailure({ error: error.message || 'Error processing transaction' }));
+          return of(TransactionActions.saveTransactionFailure({ error: error?.message || 'Error procesando transferencia' }));
         }
       })
     )
@@ -80,11 +101,15 @@ export class TransactionEffects {
         }
 
         return this.transactionsRepository.depositToAccount({ accountNumber, amount }).pipe(
-          map(() => TransactionActions.depositToAccountSuccess({ userId })),
+          map((response) =>
+            response.success
+              ? TransactionActions.depositToAccountSuccess({ userId })
+              : TransactionActions.depositToAccountFailure({ error: response.message || 'Error procesando recarga' })
+          ),
           catchError(error =>
             of(
               TransactionActions.depositToAccountFailure({
-                error: error.message || 'Error processing deposit'
+                error: error?.error?.message || error?.message || 'Error procesando recarga'
               })
             )
           )
@@ -103,10 +128,74 @@ export class TransactionEffects {
         }
 
         return this.transactionsRepository.getAccountsByUser(userId).pipe(
-          map((response) => AuthActions.updateUser({ user: { ...currentUser, user_accounts: response.data } })),
-          catchError((error) => of(AuthActions.updateUserFailure({ error: error.message || 'Error retrieving accounts' })))
+          map((response) =>
+            response.success
+              ? AuthActions.updateUser({ user: { ...currentUser, user_accounts: response.data } })
+              : AuthActions.updateUserFailure({ error: response.message || 'Error actualizando cuentas' })
+          ),
+          catchError((error) =>
+            of(
+              AuthActions.updateUserFailure({
+                error: error?.error?.message || error?.message || 'Error actualizando cuentas'
+              })
+            )
+          )
         );
       })
     )
+  );
+
+  loadUsersSuccessToast$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(TransactionActions.loadUsersSuccess),
+        tap(({ users }) => this.toast.showInfo('Usuarios cargados', `Se cargaron ${users.length} usuarios`))
+      ),
+    { dispatch: false }
+  );
+
+  loadUsersFailureToast$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(TransactionActions.loadUsersFailure),
+        tap(({ error }) => this.toast.showError('Error', error || 'No fue posible cargar usuarios'))
+      ),
+    { dispatch: false }
+  );
+
+  saveTransactionSuccessToast$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(TransactionActions.saveTransactionSuccess),
+        tap(({ transaction }) => this.toast.showSuccess('Transferencia exitosa', `Destino: ${transaction.beneficiaryName}`))
+      ),
+    { dispatch: false }
+  );
+
+  saveTransactionFailureToast$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(TransactionActions.saveTransactionFailure),
+        tap(({ error }) => this.toast.showError('Error', error || 'No fue posible realizar la transferencia'))
+      ),
+    { dispatch: false }
+  );
+
+  depositToAccountSuccessToast$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(TransactionActions.depositToAccountSuccess),
+        tap(() => this.toast.showSuccess('Recarga exitosa', 'La recarga se procesó correctamente'))
+      ),
+    { dispatch: false }
+  );
+
+  depositToAccountFailureToast$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(TransactionActions.depositToAccountFailure),
+        tap(({ error }) => this.toast.showError('Error', error || 'No fue posible realizar la recarga'))
+      ),
+    { dispatch: false }
   );
 }

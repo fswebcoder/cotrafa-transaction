@@ -30,7 +30,7 @@ export class TransactionResult {
       this.copied.set(true);
       setTimeout(() => this.copied.set(false), 2000);
     } catch (err) {
-      console.error('Failed to copy: ', err);
+      console.error('Error al copiar al portapapeles: ', err);
     }
   }
 }

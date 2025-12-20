@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { provideNgxMask } from 'ngx-mask';
 
 import { ProfileDump } from './profile-dump';
 
@@ -8,7 +10,8 @@ describe('ProfileDump', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ProfileDump]
+      imports: [ProfileDump],
+      providers: [provideRouter([]), ...provideNgxMask()]
     })
     .compileComponents();
 
@@ -17,7 +20,7 @@ describe('ProfileDump', () => {
     await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it('Debería crear el componente', () => {
     expect(component).toBeTruthy();
   });
 });

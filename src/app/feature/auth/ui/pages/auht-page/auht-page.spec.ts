@@ -1,4 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideNgxMask } from 'ngx-mask';
+import { Store } from '@ngrx/store';
+import { vi } from 'vitest';
 
 import { AuhtPage } from './auht-page';
 
@@ -8,7 +11,11 @@ describe('AuhtPage', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AuhtPage]
+      imports: [AuhtPage],
+      providers: [
+        ...provideNgxMask(),
+        { provide: Store, useValue: { selectSignal: vi.fn(() => () => false), dispatch: vi.fn() } }
+      ]
     })
     .compileComponents();
 
@@ -17,7 +24,7 @@ describe('AuhtPage', () => {
     await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it('Debería crear el componente', () => {
     expect(component).toBeTruthy();
   });
 });

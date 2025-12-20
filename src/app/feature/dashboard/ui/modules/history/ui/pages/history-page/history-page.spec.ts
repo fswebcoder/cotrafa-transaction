@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HistoryPage } from './history-page';
+import { Store } from '@ngrx/store';
+import { vi } from 'vitest';
 
 describe('HistoryPage', () => {
   let component: HistoryPage;
@@ -7,7 +9,8 @@ describe('HistoryPage', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HistoryPage]
+      imports: [HistoryPage],
+      providers: [{ provide: Store, useValue: { selectSignal: vi.fn(() => () => []), dispatch: vi.fn() } }]
     })
     .compileComponents();
     
@@ -16,7 +19,7 @@ describe('HistoryPage', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('Debería crear el componente', () => { 
     expect(component).toBeTruthy();
   });
 });

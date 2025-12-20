@@ -5,12 +5,14 @@ import { catchError, map, exhaustMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { AuthActions } from './auth.actions';
 import { AuthUseCase } from '@app/feature/auth/domain/usecases/auth.usecase';
+import { ToastService } from '@app/shared/services/toast.service';
 
 @Injectable()
 export class AuthEffects {
     private actions$ = inject(Actions);
     private authUseCase = inject(AuthUseCase);
     private router = inject(Router);
+    private toast = inject(ToastService);
 
     login$ = createEffect(() =>
         this.actions$.pipe(
@@ -21,9 +23,15 @@ export class AuthEffects {
                         if (response.success && response.data) {
                             return AuthActions.loginSuccess({ user: response.data });
                         }
-                        return AuthActions.loginFailure({ error: response.message || 'Invalid credentials' });
+                        return AuthActions.loginFailure({ error:  'Credenciales inválidas' });
                     }),
-                    catchError((error) => of(AuthActions.loginFailure({ error: error.message })))
+                    catchError(() =>
+                        of(
+                            AuthActions.loginFailure({
+                                error:  'Error iniciando sesión'
+                            })
+                        )
+                    )
                 )
             )
         )
@@ -33,6 +41,7 @@ export class AuthEffects {
         this.actions$.pipe(
             ofType(AuthActions.loginSuccess),
             tap(({ user }) => {
+                this.toast.showSuccess('Sesión iniciada', `Bienvenido ${user.user_name}`);
                 const token = user.token;
                 if (token) sessionStorage.setItem('token', token);
                 else sessionStorage.removeItem('token');
@@ -44,14 +53,33 @@ export class AuthEffects {
         { dispatch: false }
     );
 
+    loginFailureToast$ = createEffect(
+        () =>
+            this.actions$.pipe(
+                ofType(AuthActions.loginFailure),
+                tap(({ error }) => this.toast.showError('Error', error || 'No fue posible iniciar sesión'))
+            ),
+        { dispatch: false }
+    );
+
     updateUser$ = createEffect(() =>
         this.actions$.pipe(
             ofType(AuthActions.updateUser),
             tap(({ user }) => {
+                this.toast.showInfo('Cuentas actualizadas', 'Se actualizaron tus cuentas');
                 const userWithoutToken = { ...user, token: '' };
                 sessionStorage.setItem('user', JSON.stringify(userWithoutToken));
             })
         ),
+        { dispatch: false }
+    );
+
+    updateUserFailureToast$ = createEffect(
+        () =>
+            this.actions$.pipe(
+                ofType(AuthActions.updateUserFailure),
+                tap(({ error }) => this.toast.showError('Error', error || 'No fue posible actualizar tus cuentas'))
+            ),
         { dispatch: false }
     );
 

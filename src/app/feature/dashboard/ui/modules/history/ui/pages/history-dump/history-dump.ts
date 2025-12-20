@@ -1,23 +1,16 @@
-import { CommonModule } from '@angular/common';
 import { Component, input, output } from '@angular/core';
-import { CardModule } from 'primeng/card';
-import { SkeletonModule } from 'primeng/skeleton';
-import { TableModule } from 'primeng/table';
-import { PaginatorModule, PaginatorState } from 'primeng/paginator';
+import { PaginatorState } from 'primeng/paginator';
 import { IUser } from '@app/shared/entities/user.entity';
 import { IHistory } from '../../../domain/entities/history.entity';
-import { CusDisplay } from '../../components/cus-display/cus-display';
+import { AccountSummaryCard } from './components/account-summary-card/account-summary-card';
+import { HistoryTransactionsCard } from './components/history-transactions-card/history-transactions-card';
 
 @Component({
   selector: 'cf-history-dump',
   standalone: true,
   imports: [
-    CommonModule,
-    CardModule,
-    SkeletonModule,
-    TableModule,
-    PaginatorModule,
-    CusDisplay
+    AccountSummaryCard,
+    HistoryTransactionsCard
   ],
   templateUrl: './history-dump.html',
   styleUrl: './history-dump.scss',
