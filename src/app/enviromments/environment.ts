@@ -8,7 +8,7 @@ export const environment = {
   },
   services: {
 
-    apiUrl: 'https://cotrafa-transaction-back-production.up.railway.app/',
+    apiUrl: 'https://cotrafa-transaction-back-production.up.railway.app/api/',
    
   }
 };
